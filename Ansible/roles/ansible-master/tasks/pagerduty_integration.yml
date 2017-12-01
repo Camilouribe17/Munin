@@ -1,0 +1,21 @@
+# Install following the official documentation : https://www.pagerduty.com/docs/guides/munin-integration-guide/ - 03/14/2017
+
+- name: "Ensure install dir exists"
+  file:
+    path: "{{ munin_pagerduty_install_dir }}"
+    state: directory
+    mode: 0755
+
+- name: "Download pagerduty client"
+  unarchive:
+    src: "{{ munin_pagerduty_client_url }}"
+    dest: "{{ munin_pagerduty_install_dir }}"
+    remote_src: True
+    mode: 0755
+    extra_opts: ['--strip-components=1']
+
+- name: "Download munin pagerduty integration script"
+  get_url:
+    url: "{{ munin_pagerduty_integration_script_url }}"
+    dest: "{{ munin_pagerduty_install_dir }}"
+    mode: 0755

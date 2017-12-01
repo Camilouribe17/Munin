@@ -1,0 +1,44 @@
+---
+- name: Instalando Apache ,PHP y modulos requeridos.
+  apt:
+    name: "{{ item }}"
+    state: present
+    update_cache: yes
+  with_items:
+    - php7.0-json
+    - php7.0-mbstring
+    - php7.0-intl
+    - php7.0-xml
+    - php7.0-mysql
+    - libapache2-mod-php7.0
+    
+ 
+- name: Instalando Apache
+  apt:
+    name: apache2
+    state: present
+
+- name: tools
+
+  command: apt-get install -y apache2-utils
+
+- name: tools
+
+  command: apt-get install -y libcgi-fast-perl libapache2-mod-fcgid
+
+- name: Copy index.html
+  template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: root
+    group: root
+    mode: 0644
+  with_items:
+    - src: index.html
+      dest: "/var/www/html/index.html"
+      
+- name: Iniciando servicio Apache
+  service:
+    name: apache2
+    state: started
+    enabled: yes

@@ -1,0 +1,29 @@
+# Enable this for template generation
+Alias /munin {{ munin_htmldir }}
+
+<Directory {{ munin_htmldir }}>
+	Require all granted
+    Options None
+    <IfModule mod_expires.c>
+        ExpiresActive On
+    	ExpiresDefault M310
+    </IfModule>
+</Directory> 
+
+ScriptAlias {{ cgiurl_graph }} /usr/lib/munin/cgi/munin-cgi-graph
+<Location {{ cgiurl_graph }}>
+    Options +ExecCGI
+    <IfModule mod_fcgid.c>
+        SetHandler fcgid-script
+    </IfModule>
+    <IfModule mod_fastcgi.c>
+        SetHandler fastcgi-script
+    </IfModule>
+    <IfModule !mod_fastcgi.c>
+        <IfModule !mod_fcgid.c>
+            SetHandler cgi-script
+        </IfModule>
+    </IfModule>
+    Require all granted
+</Location>
+
